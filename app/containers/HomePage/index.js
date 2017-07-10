@@ -18,9 +18,12 @@ import { CardMedia, CardTitle } from "material-ui/Card";
 
 import "!!style-loader!css-loader!./homepage.css";
 
+
 export default class HomePage extends React.Component {
   state = {
-    open: false
+    open: true,
+    disabled: true,
+    inputValue: ""
   };
 
   handleOpen = () => {
@@ -31,8 +34,12 @@ export default class HomePage extends React.Component {
     this.setState({ open: false });
   };
 
+  handleChange = (e, inputValue) => {
+    this.setState({ inputValue })
+  };
+
   render() {
-    const { open } = this.state;
+    const { open, disabled } = this.state;
 
     return (
       <div className="container-fluid">
@@ -41,6 +48,8 @@ export default class HomePage extends React.Component {
             open={open}
             handleClose={this.handleClose}
             handleOpen={this.handleOpen}
+            disabled={disabled}
+            handleChange={this.handleChange}
           />
           <div className="col-12 col-md-6 padding-zero">
             <div className="home-btn">
@@ -66,11 +75,16 @@ export default class HomePage extends React.Component {
   }
 }
 
-const Modal = ({ open, handleClose }) => {
+const customContentStyle = {
+  width: '90%',
+  maxWidth: 'none',
+};
+
+
+const Modal = ({ open, handleClose, disabled, handleChange }) => {
   const actions = [
-    <FlatButton label="Cancel" primary={true} onTouchTap={handleClose} />,
-    <FlatButton
-      label="Submit"
+    <RaisedButton
+      label="Done"
       primary={true}
       keyboardFocused={true}
       onTouchTap={handleClose}
@@ -79,14 +93,21 @@ const Modal = ({ open, handleClose }) => {
   return (
     <div>
       <Dialog
-        title="Dialog With Actions"
+        titleStyle={{textAlign: "center"}}
+        title="Enter Your Email"
         actions={actions}
         modal={false}
         open={open}
         onRequestClose={handleClose}
+        contentStyle={customContentStyle}
+        autoDetectWindowHeight
       >
-        The actions in this window were passed in as an array of React objects.
-        <TextField hintText="Hint Text" />
+        You'll get the demo app and intergration instruction
+        <TextField
+          hintText="hello@world.com"
+          fullWidth={true}
+          onChange={handleChange}
+         />
       </Dialog>
     </div>
   );
