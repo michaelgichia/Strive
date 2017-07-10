@@ -18,7 +18,6 @@ import { CardMedia, CardTitle } from "material-ui/Card";
 
 import "!!style-loader!css-loader!./homepage.css";
 
-
 export default class HomePage extends React.Component {
   state = {
     open: true,
@@ -35,7 +34,14 @@ export default class HomePage extends React.Component {
   };
 
   handleChange = (e, inputValue) => {
-    this.setState({ inputValue })
+    this.setState({ inputValue });
+    if (this.state.inputValue.length > 0 && this.state.disabled === true) {
+      console.log({ input: this.state.inputValue });
+      this.setState({ disabled: false });
+    }
+    if (this.state.inputValue.length < 0) {
+      this.setState({ disabled: true });
+    }
   };
 
   render() {
@@ -56,8 +62,8 @@ export default class HomePage extends React.Component {
               <CardMedia
                 overlay={
                   <CardTitle
-                    title="Overlay title"
-                    subtitle="Overlay subtitle"
+                    title="Live Face Filters for Your App"
+                    subtitle="Boost engagement with a few lines of code"
                   />
                 }
               />
@@ -76,24 +82,24 @@ export default class HomePage extends React.Component {
 }
 
 const customContentStyle = {
-  width: '90%',
-  maxWidth: 'none',
+  width: "90%",
+  maxWidth: "none"
 };
 
-
-const Modal = ({ open, handleClose, disabled, handleChange }) => {
+const Modal = ({ open, handleClose, disabled, handleChange, error }) => {
   const actions = [
     <RaisedButton
       label="Done"
       primary={true}
       keyboardFocused={true}
       onTouchTap={handleClose}
+      disabled={disabled}
     />
   ];
   return (
     <div>
       <Dialog
-        titleStyle={{textAlign: "center"}}
+        titleStyle={{ textAlign: "center" }}
         title="Enter Your Email"
         actions={actions}
         modal={false}
@@ -107,7 +113,8 @@ const Modal = ({ open, handleClose, disabled, handleChange }) => {
           hintText="hello@world.com"
           fullWidth={true}
           onChange={handleChange}
-         />
+          errorText={error}
+        />
       </Dialog>
     </div>
   );
