@@ -29,12 +29,17 @@ import LanguageProvider from 'containers/LanguageProvider';
 /* eslint-disable import/no-unresolved, import/extensions */
 //import '!file-loader?name=[name].[ext]!./favicon.ico';
 import '!file-loader?name=[name].[ext]!./manifest.json';
+
 /* eslint-enable import/no-unresolved, import/extensions */
 
 import configureStore from './store';
 
 // Import i18n messages
 import { translationMessages } from './i18n';
+
+
+// Import theme to override Material-ui.
+import { muiTheme } from './muiTheme';
 
 // Import root routes
 import createRoutes from './routes';
@@ -58,7 +63,7 @@ const rootRoute = {
 
 const render = (messages) => {
   ReactDOM.render(
-    <MuiThemeProvider>
+    <MuiThemeProvider muiTheme={muiTheme}>
       <Provider store={store}>
         <LanguageProvider messages={messages}>
           <Router
